@@ -16,7 +16,8 @@ from scipy.stats import zscore
 numeric_cols = ["Air temperature [K]", "Process temperature [K]", "Rotational speed [rpm]", 
                 "Torque [Nm]", "Tool wear [min]"]
 
-data[numeric_cols] = data[numeric_cols].apply(lambda x: x[(zscore(x).abs() < 3)])
+data = data[(zscore(data[numeric_cols]).abs() < 3).all(axis=1)]
+
 
 # 4. 범주형 변수 원-핫 인코딩
 categorical_cols = ["Type"]
