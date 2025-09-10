@@ -18,7 +18,7 @@ app.add_middleware(
 
 # 2. 모델 로드
 MODEL_PATH = "../models/xgb_final_model.pkl"
-THRESHOLD = 0.43
+THRESHOLD = 0.7
 
 # 학습 시 사용 컬럼 (모든 필요 컬럼 포함)
 MODEL_COLS = [
