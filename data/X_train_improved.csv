@@ -1,4 +1,4 @@
-Air temperature [K],Process temperature [K],Rotational speed [rpm],Torque [Nm],Tool wear [min],Temp_diff,Power_factor,Type_H,Type_L,Type_M,Tool_wear_category_Low,Tool_wear_category_Medium,Tool_wear_category_High
+Air temperature,Process temperature,Rotational speed,Torque,Tool wear,Temp_diff,Power_factor,Type_H,Type_L,Type_M,Tool_wear_category_Low,Tool_wear_category_Medium,Tool_wear_category_High
 0.34103564871087266,1.13809929479201,-0.42445652577831666,0.5744072482800665,-1.4445254188802001,1.0015265785547562,0.6857023896160443,False,True,False,True,False,False
 -1.3694128844415858,-1.3016991858577511,-1.0070062573638374,1.1821046057697226,1.6801752548021243,0.8015006641211202,1.0772536438118436,False,False,True,False,False,True
 -2.224637151017815,-2.6571427862187424,-0.334833490149775,0.06970944290730123,0.7694584755379292,0.5014617924706379,0.02230442230625378,False,True,False,False,False,True
