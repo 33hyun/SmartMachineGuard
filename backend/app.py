@@ -6,6 +6,16 @@ import joblib
 # 1. FastAPI 앱 생성
 app = FastAPI(title="Smart Machine Guard API")
 
+from fastapi.middleware.cors import CORSMiddleware
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # 개발단계에서는 * 허용, 나중에 도메인 지정 권장
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 # 2. 모델 로드
 MODEL_PATH = "../models/xgb_final_model.pkl"
 THRESHOLD = 0.43
