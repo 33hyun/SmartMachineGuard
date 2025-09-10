@@ -3,19 +3,23 @@ from pydantic import BaseModel
 import pandas as pd
 import joblib
 
+# 1. FastAPI 앱 생성
 app = FastAPI(title="Smart Machine Guard API")
 
-# 모델 로드
+# 2. 모델 로드
 MODEL_PATH = "../models/xgb_final_model.pkl"
 THRESHOLD = 0.43
+
+# 학습 시 사용 컬럼 (모든 필요 컬럼 포함)
 MODEL_COLS = [
     'Air_temperature_K_', 'Process_temperature_K_', 'Rotational_speed_rpm_',
     'Torque_Nm_', 'Tool_wear_min_', 'Type_H', 'Type_L', 'Type_M'
 ]
 
+# 모델 로드
 model = joblib.load(MODEL_PATH)
 
-# 입력 모델 (JSON에는 _ 없음)
+# 3. 입력 데이터 모델 정의 (JSON에는 _ 없음)
 class MachineInput(BaseModel):
     Air_temperature_K: float
     Process_temperature_K: float
@@ -26,12 +30,14 @@ class MachineInput(BaseModel):
     Type_L: int
     Type_M: int
 
+# 4. 예측 API
 @app.post("/predict")
 def predict_failure(data: MachineInput):
     try:
+        # 4-1. DataFrame 변환 (pydantic v2: model_dump())
         df = pd.DataFrame([data.model_dump()])
 
-        # 컬럼명 변환
+        # 4-2. 컬럼명 변환 (JSON → 학습 컬럼)
         rename_map = {
             "Air_temperature_K": "Air_temperature_K_",
             "Process_temperature_K": "Process_temperature_K_",
@@ -41,17 +47,19 @@ def predict_failure(data: MachineInput):
         }
         df = df.rename(columns=rename_map)
 
-        # 누락 컬럼 0으로 채우기
+        # 4-3. 누락 컬럼 자동 0 채움
         for col in MODEL_COLS:
             if col not in df.columns:
                 df[col] = 0
 
+        # 4-4. 컬럼 순서 맞춤
         df = df[MODEL_COLS]
 
+        # 4-5. 예측
         proba = model.predict_proba(df)[:, 1][0]
         pred = int(proba >= THRESHOLD)
 
-        # numpy 타입 → 파이썬 기본 타입 변환
+        # 4-6. numpy 타입 → 파이썬 기본 타입 변환
         return {"Machine_failure_probability": float(proba), "Predicted_failure": pred}
 
     except Exception as e:
