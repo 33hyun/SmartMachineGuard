@@ -10,6 +10,7 @@ matplotlib.use('Agg')
 import seaborn as sns
 import io
 import base64
+from fastapi.middleware.cors import CORSMiddleware
 
 # -----------------------------
 # 로깅 설정
@@ -24,6 +25,22 @@ app = FastAPI(
     title="소성공정 고장예측 API",
     description="GradientBoosting 기반 제조 공정 고장 확률 예측",
     version="1.0"
+)
+
+# CORS 허용
+origins = [
+    "http://localhost:5173",  # Vite 기본 포트
+    "http://localhost:3000",  # CRA 기본 포트
+    "http://127.0.0.1:5173",
+    "http://127.0.0.1:3000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,       # 허용할 프론트엔드 주소
+    allow_credentials=True,
+    allow_methods=["*"],         # 모든 HTTP 메서드 허용
+    allow_headers=["*"],         # 모든 헤더 허용
 )
 
 # -----------------------------
@@ -151,12 +168,7 @@ def get_recommendations(data: ProcessData, prob: float) -> List[str]:
 # Feature Importance → base64 변환
 # -----------------------------
 def plot_feature_importance(model, X_cols):
-    import matplotlib
     matplotlib.use('Agg')  # <- 여기서 지정
-    import matplotlib.pyplot as plt
-    import seaborn as sns
-    import io
-    import base64
 
     if hasattr(model,'feature_importances_'):
         fi = pd.DataFrame({'feature': X_cols, 'importance': model.feature_importances_}).sort_values(
