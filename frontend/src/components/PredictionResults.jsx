@@ -7,21 +7,21 @@ const PredictionResults = ({ result }) => {
 
   const getRiskColor = (level) => {
     switch (level) {
-      case '낮음': return 'text-green-400';
-      case '보통': return 'text-yellow-400';
-      case '높음': return 'text-orange-400';
-      case '매우 높음': return 'text-red-400';
-      default: return 'text-gray-400';
+      case '낮음': return 'text-green-300';
+      case '보통': return 'text-yellow-300';
+      case '높음': return 'text-orange-300';
+      case '매우 높음': return 'text-red-300';
+      default: return 'text-gray-300';
     }
   };
 
   const getRiskBgColor = (level) => {
     switch (level) {
-      case '낮음': return 'bg-green-500/20 border-green-400/30';
-      case '보통': return 'bg-yellow-500/20 border-yellow-400/30';
-      case '높음': return 'bg-orange-500/20 border-orange-400/30';
-      case '매우 높음': return 'bg-red-500/20 border-red-400/30';
-      default: return 'bg-gray-500/20 border-gray-400/30';
+      case '낮음': return 'bg-green-500/10 border-green-400/40 backdrop-blur-sm';
+      case '보통': return 'bg-yellow-500/10 border-yellow-400/40 backdrop-blur-sm';
+      case '높음': return 'bg-orange-500/10 border-orange-400/40 backdrop-blur-sm';
+      case '매우 높음': return 'bg-red-500/10 border-red-400/40 backdrop-blur-sm';
+      default: return 'bg-gray-500/10 border-gray-400/40 backdrop-blur-sm';
     }
   };
 
@@ -33,7 +33,7 @@ const PredictionResults = ({ result }) => {
           title="고장 확률"
           value={`${(result.failure_probability * 100).toFixed(1)}%`}
           icon={TrendingUp}
-          color={result.failure_probability > 0.5 ? 'text-red-400' : 'text-green-400'}
+          color={result.failure_probability > 0.5 ? 'text-red-300' : 'text-green-300'}
           subtitle={result.failure_prediction ? '고장 예상' : '정상 운영'}
         />
         <StatusCard
@@ -51,16 +51,16 @@ const PredictionResults = ({ result }) => {
       </div>
 
       {/* 권장사항 */}
-      <div className={`rounded-2xl p-6 border ${getRiskBgColor(result.risk_level)}`}>
+      <div className={`rounded-2xl p-6 border-2 ${getRiskBgColor(result.risk_level)}`}>
         <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-3">
-          <AlertTriangle className="w-6 h-6" />
+          <AlertTriangle className="w-6 h-6 text-yellow-400" />
           권장사항
         </h3>
-        <ul className="space-y-2">
+        <ul className="space-y-3">
           {result.recommendations?.map((rec, index) => (
-            <li key={index} className="text-gray-300 flex items-start gap-3">
+            <li key={index} className="text-gray-100 flex items-start gap-3 text-sm leading-relaxed">
               <span className="w-2 h-2 bg-blue-400 rounded-full mt-2 flex-shrink-0"></span>
-              {rec}
+              <span className="font-medium">{rec}</span>
             </li>
           ))}
         </ul>
@@ -68,13 +68,16 @@ const PredictionResults = ({ result }) => {
 
       {/* Feature Importance 차트 */}
       {result.feature_importance && (
-        <div className="bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10">
-          <h3 className="text-xl font-bold text-white mb-4">특성 중요도</h3>
-          <div className="flex justify-center">
+        <div className="bg-white/8 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+          <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-3">
+            <Activity className="w-6 h-6 text-purple-400" />
+            특성 중요도
+          </h3>
+          <div className="flex justify-center bg-white/5 rounded-xl p-4">
             <img 
               src={`data:image/png;base64,${result.feature_importance}`} 
               alt="Feature Importance"
-              className="max-w-full h-auto rounded-lg"
+              className="max-w-full h-auto rounded-lg shadow-lg"
             />
           </div>
         </div>
