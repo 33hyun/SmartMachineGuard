@@ -14,6 +14,8 @@ fastapi==0.116.1
 fonttools==4.59.2
 h11==0.16.0
 idna==3.10
+imbalanced-learn==0.12.4
+imblearn==0.0
 importlib_metadata @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_importlib-metadata_1747934053/work
 importlib_resources==6.5.2
 ipykernel @ file:///Users/runner/miniforge3/conda-bld/ipykernel_1754352890318/work

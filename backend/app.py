@@ -5,6 +5,8 @@ import pandas as pd
 import joblib
 import logging
 import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.use('Agg')
 import seaborn as sns
 import io
 import base64
@@ -149,6 +151,13 @@ def get_recommendations(data: ProcessData, prob: float) -> List[str]:
 # Feature Importance → base64 변환
 # -----------------------------
 def plot_feature_importance(model, X_cols):
+    import matplotlib
+    matplotlib.use('Agg')  # <- 여기서 지정
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+    import io
+    import base64
+
     if hasattr(model,'feature_importances_'):
         fi = pd.DataFrame({'feature': X_cols, 'importance': model.feature_importances_}).sort_values(
             'importance', ascending=False)
@@ -162,6 +171,7 @@ def plot_feature_importance(model, X_cols):
         plt.close(fig)
         return img_base64
     return None
+
 
 # -----------------------------
 # 단일 데이터 예측
